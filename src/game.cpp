@@ -7,7 +7,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
-  PlaceFood();
+
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -18,7 +18,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
-
+  //render the wall
+    PlaceFood();
   while (running) {
     frame_start = SDL_GetTicks();
 
@@ -57,7 +58,7 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y)) {
+    if (!snake.SnakeCell(x, y)/*and it is not wall cell*/) {
       food.x = x;
       food.y = y;
       return;
@@ -81,6 +82,12 @@ void Game::Update() {
     snake.GrowBody();
     snake.speed += 0.02;
   }
+
+  /*
+  if the head touch a wall 
+  snake will die 
+  finish the game
+  */
 }
 
 int Game::GetScore() const { return score; }
