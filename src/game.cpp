@@ -2,12 +2,13 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, Level l)
+Game::Game(std::size_t grid_width, std::size_t grid_height, Level l ,std::string name)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)),
-      obs(grid_width , grid_height ,l) {
+      obs(grid_width , grid_height ,l),
+      userName(name) {
 
 }
 
@@ -37,7 +38,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, frame_count , userName);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -91,6 +92,7 @@ void Game::Update() {
 
   if(obs.obstacle_cell(new_x,new_y)){
     snake.alive = false ;
+    userName = "game over";
     return ;
   }
 

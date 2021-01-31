@@ -5,7 +5,7 @@
 #include "SDL.h"
 
 enum class Level{
-    easy,
+    easy = 1,
     medium,
     hard,
 };
