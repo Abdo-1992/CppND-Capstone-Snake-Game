@@ -2,11 +2,12 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::size_t grid_width, std::size_t grid_height, Level l)
     : snake(grid_width, grid_height),
       engine(dev()),
-      random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)) {
+      random_w(0, static_cast<int>(grid_width - 1)),
+      random_h(0, static_cast<int>(grid_height - 1)),
+      obs(grid_width , grid_height ,l) {
 
 }
 
@@ -18,15 +19,14 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
-  //render the wall
-    PlaceFood();
+  PlaceFood();
   while (running) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food , obs);
 
     frame_end = SDL_GetTicks();
 
@@ -58,7 +58,7 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y)/*and it is not wall cell*/) {
+    if (!snake.SnakeCell(x, y) && (!obs.obstacle_cell(x, y))) {
       food.x = x;
       food.y = y;
       return;
@@ -88,6 +88,13 @@ void Game::Update() {
   snake will die 
   finish the game
   */
+
+  if(obs.obstacle_cell(new_x,new_y)){
+    snake.alive = false ;
+    return ;
+  }
+
+
 }
 
 int Game::GetScore() const { return score; }

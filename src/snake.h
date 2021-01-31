@@ -11,15 +11,15 @@ class Snake {
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),
         grid_height(grid_height),
-        head_x(grid_width / 2),
-        head_y(grid_height / 2) {}
+        head_x(grid_width / 8),
+        head_y(grid_height / 8) {}
 
   void Update();
 
   void GrowBody();
   bool SnakeCell(int x, int y);
 
-  Direction direction = Direction::kUp;
+  Direction direction = Direction::kDown;
 
   float speed{0.1f};
   int size{1};

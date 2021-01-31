@@ -42,7 +42,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g    -std=c++17"
+					"fragment" : "-g  -g   -std=c++17"
 				}
 			],
 			"includes" : 
@@ -63,7 +63,8 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5
 			]
 		}
 	],
@@ -73,7 +74,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g",
+				"fragment" : "-g  -g",
 				"role" : "flags"
 			},
 			{
@@ -104,7 +105,8 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5
 			]
 		}
 	],
@@ -138,6 +140,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/snake.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/obstacle.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
