@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food , Obstacle obs) {
+void Renderer::Render(Snake const snake, SDL_Point const &food ,SDL_Point const &specialFood , uint8_t specialFoodFlag ,Obstacle obs) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -63,6 +63,14 @@ void Renderer::Render(Snake const snake, SDL_Point const &food , Obstacle obs) {
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Render special food
+  if(specialFoodFlag) {
+    SDL_SetRenderDrawColor(sdl_renderer, 0xF0, 0xCF, 0xF0, 0xFF);
+    block.x = specialFood.x * block.w;
+    block.y = specialFood.y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);  
+  }
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);

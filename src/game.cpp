@@ -19,15 +19,18 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_end;
   Uint32 frame_duration;
   int frame_count = 0;
+  int specialFoodTimeout = 0 ;
   bool running = true;
-  PlaceFood();
+  PlaceFood();    
+  PlaceSpecialFood();
+
   while (running) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food , obs);
+    renderer.Render(snake, food , SpecialFood , chanceOpen ,obs);
 
     frame_end = SDL_GetTicks();
 
@@ -48,6 +51,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // achieve the correct frame rate.
     if (frame_duration < target_frame_duration) {
       SDL_Delay(target_frame_duration - frame_duration);
+      specialFoodTimeout++;
+      if(specialFoodTimeout > 1100){
+        specialFoodTimeout = 0 ;
+        chanceOpen = 0 ;
+      }
     }
   }
 }
@@ -67,7 +75,23 @@ void Game::PlaceFood() {
   }
 }
 
+void Game::PlaceSpecialFood() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    if (!snake.SnakeCell(x, y) && (!obs.obstacle_cell(x, y))) {
+      SpecialFood.x = x;
+      SpecialFood.y = y;
+      return;
+    }
+  }
+}
+
 void Game::Update() {
+  static int specialFoodRepeatness = 0 ;
   if (!snake.alive || snake.stopSnake) return;
 
   snake.Update();
@@ -77,12 +101,30 @@ void Game::Update() {
 
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
+    specialFoodRepeatness++;
     score++;
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+    chanceOpen = 0 ;
+    if(!(specialFoodRepeatness%3)){
+          chanceOpen = 1 ;
+          PlaceSpecialFood();
+    }
   }
+  
+
+
+  if (SpecialFood.x == new_x && SpecialFood.y == new_y && chanceOpen) {
+    score+=15;
+    chanceOpen = 0 ;
+    PlaceSpecialFood();
+    // Grow snake and increase speed.
+    snake.GrowBody();
+    snake.speed += 0.02;
+  }
+
 
   /*
   if the head touch a wall 

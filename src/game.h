@@ -17,11 +17,14 @@ class Game {
   int GetSize() const;
 
   std::string userName ;
+  uint8_t chanceOpen{0} ;
 
  private:
+
   Snake snake;
   Obstacle obs ;
   SDL_Point food;
+  SDL_Point SpecialFood;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -31,6 +34,7 @@ class Game {
   int score{0};
 
   void PlaceFood();
+  void PlaceSpecialFood();
   void Update();
 };
 
