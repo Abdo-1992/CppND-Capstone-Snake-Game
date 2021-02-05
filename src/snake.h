@@ -4,6 +4,9 @@
 #include <vector>
 #include "SDL.h"
 
+/*
+This class is responsible for snake position, snake body, snake speed and snake alive
+*/
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
@@ -14,9 +17,14 @@ class Snake {
         head_x(grid_width / 8),
         head_y(grid_height / 8) {}
 
+
+  //this function is responsible to updating snake position and snake body
   void Update();
 
+  //this fucntion is used to add a block to the snake body after it hit the food
   void GrowBody();
+
+  //this function return weather a certian cell is a part of the snake or not
   bool SnakeCell(int x, int y);
 
   Direction direction = Direction::kDown;
@@ -30,7 +38,10 @@ class Snake {
   std::vector<SDL_Point> body;
 
  private:
+  //this fuction updates the snake head position
   void UpdateHead();
+
+  //this fucntion updates the snake budy position
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
   bool growing{false};

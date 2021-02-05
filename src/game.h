@@ -8,12 +8,21 @@
 #include "snake.h"
 #include "obstacle.hpp"
 
+
+/*
+This class is controlling the snake, food, and speacial food in the game and 
+its position.
+*/
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height, Level l , std::string);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
+
+  //return the score of the player
   int GetScore() const;
+
+  //return the size of the snake after the game
   int GetSize() const;
 
   std::string userName ;
